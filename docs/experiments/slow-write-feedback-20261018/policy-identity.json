@@ -1,0 +1,235 @@
+{
+  "status": "FIVE_POLICY_IDENTITIES_AND_TLS_AUTH_INTEGRITY_PASS_WITH_RETAINED_TEST_EXPECTATION_FAILURE",
+  "verified_utc": "2026-10-18T09:56:08.420288+00:00",
+  "candidate_binary_sha256": "643318adadee477ecc30f8aaaff91b1738f8a3ba9ec6a91338f1d21c870f5aa5",
+  "fixture_binary_sha256": "c37983535676ec507380cf2276afa033f789c4a497f53dc6df0951755a9d51f9",
+  "accepted_cases": [
+    {
+      "case": "unset",
+      "status": "PASS",
+      "started_utc": "2026-10-18T09:52:06.679169+00:00",
+      "expected_scheduler": "proxy_round_robin",
+      "ended_utc": "2026-10-18T09:52:13.052170+00:00",
+      "h2_samples": 2,
+      "observed_schedulers": [
+        "proxy_round_robin"
+      ],
+      "verified_lanes": 42,
+      "tls_name_chain_ALPN": true
+    },
+    {
+      "case": "off",
+      "status": "PASS",
+      "started_utc": "2026-10-18T09:52:13.052968+00:00",
+      "expected_scheduler": "proxy_round_robin",
+      "ended_utc": "2026-10-18T09:52:19.381153+00:00",
+      "h2_samples": 2,
+      "observed_schedulers": [
+        "proxy_round_robin"
+      ],
+      "verified_lanes": 42,
+      "tls_name_chain_ALPN": true
+    },
+    {
+      "case": "nonexact",
+      "status": "PASS",
+      "started_utc": "2026-10-18T09:52:19.381908+00:00",
+      "expected_scheduler": "proxy_round_robin",
+      "ended_utc": "2026-10-18T09:52:25.835131+00:00",
+      "h2_samples": 2,
+      "observed_schedulers": [
+        "proxy_round_robin"
+      ],
+      "verified_lanes": 42,
+      "tls_name_chain_ALPN": true
+    },
+    {
+      "case": "on",
+      "status": "PASS",
+      "started_utc": "2026-10-18T09:52:25.836033+00:00",
+      "expected_scheduler": "proxy_slow_write_feedback",
+      "ended_utc": "2026-10-18T09:52:32.277065+00:00",
+      "h2_samples": 2,
+      "observed_schedulers": [
+        "proxy_slow_write_feedback"
+      ],
+      "verified_lanes": 42,
+      "tls_name_chain_ALPN": true
+    },
+    {
+      "case": "latency_off",
+      "status": "PASS",
+      "started_utc": "2026-10-18T09:54:17.662887+00:00",
+      "expected_scheduler": "round_robin",
+      "ended_utc": "2026-10-18T09:54:24.165225+00:00",
+      "h2_samples": 2,
+      "observed_schedulers": [
+        "round_robin"
+      ],
+      "verified_lanes": 42,
+      "tls_name_chain_ALPN": true
+    }
+  ],
+  "original_five_case_result": {
+    "status": "FAIL",
+    "started_utc": "2026-10-18T09:52:06.669260+00:00",
+    "scope": "loopback namespace real TLS/auth and scheduler identity; not a network or performance gate",
+    "cases": [
+      {
+        "case": "unset",
+        "status": "PASS",
+        "started_utc": "2026-10-18T09:52:06.679169+00:00",
+        "expected_scheduler": "proxy_round_robin",
+        "ended_utc": "2026-10-18T09:52:13.052170+00:00",
+        "h2_samples": 2,
+        "observed_schedulers": [
+          "proxy_round_robin"
+        ],
+        "verified_lanes": 42,
+        "tls_name_chain_ALPN": true
+      },
+      {
+        "case": "off",
+        "status": "PASS",
+        "started_utc": "2026-10-18T09:52:13.052968+00:00",
+        "expected_scheduler": "proxy_round_robin",
+        "ended_utc": "2026-10-18T09:52:19.381153+00:00",
+        "h2_samples": 2,
+        "observed_schedulers": [
+          "proxy_round_robin"
+        ],
+        "verified_lanes": 42,
+        "tls_name_chain_ALPN": true
+      },
+      {
+        "case": "nonexact",
+        "status": "PASS",
+        "started_utc": "2026-10-18T09:52:19.381908+00:00",
+        "expected_scheduler": "proxy_round_robin",
+        "ended_utc": "2026-10-18T09:52:25.835131+00:00",
+        "h2_samples": 2,
+        "observed_schedulers": [
+          "proxy_round_robin"
+        ],
+        "verified_lanes": 42,
+        "tls_name_chain_ALPN": true
+      },
+      {
+        "case": "on",
+        "status": "PASS",
+        "started_utc": "2026-10-18T09:52:25.836033+00:00",
+        "expected_scheduler": "proxy_slow_write_feedback",
+        "ended_utc": "2026-10-18T09:52:32.277065+00:00",
+        "h2_samples": 2,
+        "observed_schedulers": [
+          "proxy_slow_write_feedback"
+        ],
+        "verified_lanes": 42,
+        "tls_name_chain_ALPN": true
+      },
+      {
+        "case": "latency_off",
+        "status": "FAIL",
+        "started_utc": "2026-10-18T09:52:32.277947+00:00",
+        "expected_scheduler": ""
+      }
+    ],
+    "resources": {
+      "cpu.max": "40000 100000",
+      "memory.max": "536870912",
+      "memory.swap.max": "0",
+      "pids.max": "128"
+    },
+    "private_netns_inode": 4026532379,
+    "reason": "actual_scheduler_identity_mismatch",
+    "error_type": "RuntimeError",
+    "owned_child_cleanup_errors": [],
+    "memory_events_after": {
+      "low": 0,
+      "high": 0,
+      "max": 0,
+      "oom": 0,
+      "oom_kill": 0,
+      "oom_group_kill": 0
+    },
+    "oom_delta": {
+      "oom": 0,
+      "oom_kill": 0
+    },
+    "ended_utc": "2026-10-18T09:52:38.496759+00:00"
+  },
+  "original_outer": {
+    "status": "FAIL",
+    "started_utc": "2026-10-18T09:52:05.795400+00:00",
+    "unit": "pcs-policy-smoke-4cce4c27d1bc.service",
+    "plan_sha256": "93024ba8c18c5a26634298eb841e3f8c55de1cfbd73b0bcaa6174573be0da3f9",
+    "unit_returncode": 1,
+    "reason": "inner_not_passed",
+    "error_type": "RuntimeError",
+    "unit_cleanup": true,
+    "cgroup_populated": 0,
+    "synthetic_secret_files_removed": true,
+    "host_network_unchanged": true,
+    "ended_utc": "2026-10-18T09:52:38.615842+00:00"
+  },
+  "corrected_single_case_result": {
+    "status": "PASS",
+    "started_utc": "2026-10-18T09:54:17.652949+00:00",
+    "scope": "loopback namespace real TLS/auth and scheduler identity; not a network or performance gate",
+    "cases": [
+      {
+        "case": "latency_off",
+        "status": "PASS",
+        "started_utc": "2026-10-18T09:54:17.662887+00:00",
+        "expected_scheduler": "round_robin",
+        "ended_utc": "2026-10-18T09:54:24.165225+00:00",
+        "h2_samples": 2,
+        "observed_schedulers": [
+          "round_robin"
+        ],
+        "verified_lanes": 42,
+        "tls_name_chain_ALPN": true
+      }
+    ],
+    "resources": {
+      "cpu.max": "40000 100000",
+      "memory.max": "536870912",
+      "memory.swap.max": "0",
+      "pids.max": "128"
+    },
+    "private_netns_inode": 4026532379,
+    "owned_child_cleanup_errors": [],
+    "memory_events_after": {
+      "low": 0,
+      "high": 0,
+      "max": 0,
+      "oom": 0,
+      "oom_kill": 0,
+      "oom_group_kill": 0
+    },
+    "oom_delta": {
+      "oom": 0,
+      "oom_kill": 0
+    },
+    "ended_utc": "2026-10-18T09:54:24.927486+00:00"
+  },
+  "corrected_outer": {
+    "status": "PASS",
+    "started_utc": "2026-10-18T09:54:16.790865+00:00",
+    "unit": "pcs-policy-smoke-41ffe6f16fe6.service",
+    "plan_sha256": "bb1d82c28b60e90491e09d43c11a1ba95b243e258f49582dc96dd55ca13523d5",
+    "unit_returncode": 0,
+    "unit_cleanup": true,
+    "cgroup_populated": 0,
+    "synthetic_secret_files_removed": true,
+    "host_network_unchanged": true,
+    "ended_utc": "2026-10-18T09:54:25.000616+00:00"
+  },
+  "correction": "Root and independent reviewer initially missed !go1.27 buildtag, so original latency_off expectedempty waswrong. client_priority_go126.go returns true onGo1.25.6; correctdefault round_robin. OriginalFAIL retained, onlythiscase rerun, no runtime sourcechange.",
+  "limits": [
+    "42 CONNECT tunnels percase withverifiedCA/SNI/ALPN/auth/SHA/EOF; notpeople",
+    "on policy selected doesnot prove100msfeedback triggered",
+    "rawloopbacklatencies excluded fromperformance acceptance",
+    "performance/cost/network andproduction gates pending; notdeployed"
+  ]
+}

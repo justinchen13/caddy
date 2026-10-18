@@ -1,0 +1,63 @@
+{
+  "status": "PASS",
+  "started_utc": "2026-10-18T09:42:54.557461+00:00",
+  "plan_sha256": "ea76b7700f5c1ac8494ed71e2d40f7465c5205bdd1e10c2f263fd3c41c60c1b5",
+  "minimum_free_bytes": 1594740736,
+  "production_changed": false,
+  "binary_only": true,
+  "previous_four_functional_phases": "PASS",
+  "cache_container_preserved": true,
+  "startup_restored": true,
+  "resource_restored": true,
+  "cached_old_mount_policy": "old /src/net mount stays writable but build only reads owned source archives; no shell command references old tree",
+  "startup_metadata_limit": "bytes,mode,inode,uid,gid,mtime restored and checked; atime not promised, ctime necessarily changes",
+  "old_source_before": {
+    "head": "ca43f763b381b813d5fb2c1344a332a0441f91ab",
+    "status_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "untracked_sha256": {}
+  },
+  "effective_resources": {
+    "NanoCpus": 350000000,
+    "Memory": 536870912,
+    "MemorySwap": 536870912,
+    "PidsLimit": 128,
+    "NetworkMode": "none"
+  },
+  "memory_events_before": {
+    "low": 0,
+    "high": 0,
+    "max": 0,
+    "oom": 0,
+    "oom_kill": 0,
+    "oom_group_kill": 0
+  },
+  "build_started_utc": "2026-10-18T09:42:55.733794+00:00",
+  "captured_output_bytes": 0,
+  "build_ended_utc": "2026-10-18T09:46:01.475366+00:00",
+  "owned_temporary_source_removed": true,
+  "binary_sha256": "643318adadee477ecc30f8aaaff91b1738f8a3ba9ec6a91338f1d21c870f5aa5",
+  "binary_bytes": 46985400,
+  "container_init_oom_killed": false,
+  "memory_events_after": {
+    "low": 0,
+    "high": 0,
+    "max": 6902,
+    "oom": 0,
+    "oom_kill": 0,
+    "oom_group_kill": 0
+  },
+  "memory_event_delta": {
+    "oom": 0,
+    "oom_kill": 0
+  },
+  "old_source_after": {
+    "head": "ca43f763b381b813d5fb2c1344a332a0441f91ab",
+    "status_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "untracked_sha256": {}
+  },
+  "old_source_unchanged": true,
+  "ended_utc": "2026-10-18T09:46:05.170147+00:00",
+  "end_free_bytes": 1762697216
+}

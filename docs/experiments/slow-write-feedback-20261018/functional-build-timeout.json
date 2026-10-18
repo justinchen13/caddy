@@ -1,0 +1,217 @@
+{
+  "status": "FOUR_FUNCTIONAL_PHASES_PASS_BINARY_BUILD_TIMED_OUT_NOT_DEPLOYABLE",
+  "started_utc": "2026-10-18T09:13:50.816329+00:00",
+  "finished_utc": "2026-10-18T09:28:54.496681+00:00",
+  "verified_utc": "2026-10-18T09:30:24.884687+00:00",
+  "plan_sha256": "bafd4b09f95db2d0a03cd142b8e8ff1316d0c9b79d2988b9f19dc3d7df3eb9d7",
+  "source_postcheck": "exact HEAD/tree/clean and frozen file hashes PASS after cleanup",
+  "sources": {
+    "caddy": {
+      "path": "/root/proxy-source-lab/caddy-slow-write-feedback-20261018",
+      "commit": "15f772923625b4dedba3225d34a8952980dd30bd",
+      "tree": "c258a2f2cd24732de1c65751fa2568ebdde32fd2"
+    },
+    "net": {
+      "path": "/root/proxy-source-lab/net-slow-write-quantum-20261018",
+      "commit": "ce23d31fb95dd1747d73e079beace9918c178528",
+      "tree": "0443ba9768362de1a10d18a0a2608571740160dc"
+    },
+    "forwardproxy": {
+      "path": "/root/proxy-source-lab/forwardproxy",
+      "commit": "b1e4e257f5f3ca9774cb10744f86684e532f0d2a",
+      "tree": "c57be2ce3498887001618518d92289c46dd3f3f4"
+    }
+  },
+  "phases": [
+    {
+      "name": "caddy-normal.log",
+      "status": "PASS",
+      "top_tests": 15,
+      "test_names": [
+        "TestProxyEvidenceTLSHTTP2CorrelationAndPrivacy",
+        "TestProxyEvidenceCapturesPendingSocketWriteAndTimeout",
+        "TestProxyEvidenceRateLimitRetainsClose",
+        "TestProxyEvidenceErrorClassification",
+        "TestProxyEvidenceH2ObserverNonblockingAndAuthentication",
+        "TestProxyEvidenceTCPReceiveQueueAndCache",
+        "TestProxyEvidenceTCPUnavailableIsUnknown",
+        "TestProxyEvidenceReadPendingConcurrentUnknown",
+        "TestProxyEvidenceReadStateRegistrationDoesNotAuthenticate",
+        "TestProxyTransportInfoEveryScalarLengthAndZero",
+        "TestProxyTransportPacingAndAppLimited",
+        "TestProxyTransportAlgorithmAndBBRBoundaries",
+        "TestProxyTransportGroupsIndependentFailureAndNoBBRGuess",
+        "TestProxyTransportRealSocketCachePrivacyAndClose",
+        "TestProxyTransportInactivePathHasNoQueries"
+      ],
+      "go_package_result": [
+        "ok  \tgithub.com/caddyserver/caddy/v2/modules/caddyhttp\t2.771s"
+      ],
+      "sha256": "26cb9aa6a2f4b4c6f241fa18c89e3c40299996fc222ed727355a7728a5aa924e",
+      "bytes": 8065
+    },
+    {
+      "name": "caddy-race.log",
+      "status": "PASS",
+      "top_tests": 15,
+      "test_names": [
+        "TestProxyEvidenceTLSHTTP2CorrelationAndPrivacy",
+        "TestProxyEvidenceCapturesPendingSocketWriteAndTimeout",
+        "TestProxyEvidenceRateLimitRetainsClose",
+        "TestProxyEvidenceErrorClassification",
+        "TestProxyEvidenceH2ObserverNonblockingAndAuthentication",
+        "TestProxyEvidenceTCPReceiveQueueAndCache",
+        "TestProxyEvidenceTCPUnavailableIsUnknown",
+        "TestProxyEvidenceReadPendingConcurrentUnknown",
+        "TestProxyEvidenceReadStateRegistrationDoesNotAuthenticate",
+        "TestProxyTransportInfoEveryScalarLengthAndZero",
+        "TestProxyTransportPacingAndAppLimited",
+        "TestProxyTransportAlgorithmAndBBRBoundaries",
+        "TestProxyTransportGroupsIndependentFailureAndNoBBRGuess",
+        "TestProxyTransportRealSocketCachePrivacyAndClose",
+        "TestProxyTransportInactivePathHasNoQueries"
+      ],
+      "go_package_result": [
+        "ok  \tgithub.com/caddyserver/caddy/v2/modules/caddyhttp\t4.698s"
+      ],
+      "sha256": "d78b7c0cdbea8296e1a869820a0fb557aa3a21c953e79e5fa2dbda1af1eca85d",
+      "bytes": 8065
+    },
+    {
+      "name": "forwardproxy-off.log",
+      "status": "PASS",
+      "top_tests": 41,
+      "test_names": [
+        "TestWhitelistAllowing",
+        "TestWhitelistBlocking",
+        "TestLocalhostDefaultForbidden",
+        "TestLocalNetworksDefaultForbidden",
+        "TestBlacklistBlocking",
+        "TestBlacklistAllowing",
+        "TestTheTest",
+        "TestDiagnosticsDownloadResetIsNotOverwrittenByCleanup",
+        "TestDiagnosticsDialFailureFieldsAndPrivacy",
+        "TestDiagnosticsInitialFlushPreservesCauseAndSkipsDial",
+        "TestDiagnosticsMeasuresBlockingAndPreservesPadding",
+        "TestDiagnosticsCaddyfileAndCanceledClassification",
+        "TestPassthrough",
+        "TestGETNoAuth",
+        "TestGETAuthCorrect",
+        "TestGETAuthWrong",
+        "TestProxySelfGet",
+        "TestConnectNoAuth",
+        "TestConnectAuthCorrect",
+        "TestConnectAuthWrong",
+        "TestPAC",
+        "TestCONNECTViaUpstream",
+        "TestGETViaUpstream",
+        "TestUpstreamPassthrough",
+        "TestHttpClient",
+        "TestHttpClientH2Multiplexing",
+        "TestGETAuthCorrectProbeResist",
+        "TestGETAuthWrongProbeResist",
+        "TestGETAuthWrongProbeResistRedir",
+        "TestConnectAuthCorrectProbeResist",
+        "TestConnectAuthWrongProbeResist",
+        "TestConnectAuthWrongProbeResistRedir",
+        "TestReliabilityRequestCancellationReachesDial",
+        "TestReliabilityUploadErrorReleasesTunnel",
+        "TestReliabilityHalfClosePreservesResponse",
+        "TestReliabilityPaddingFrames",
+        "TestReliabilityFallbackAndLoserCancellation",
+        "TestReliabilityDialConcurrencyAndDeadline",
+        "TestReliabilityDNSCancellation",
+        "TestReliabilityACLBeforeRace",
+        "TestReliabilityHTTP2Isolation"
+      ],
+      "go_package_result": [
+        "ok  \tgithub.com/caddyserver/forwardproxy\t10.023s",
+        "?   \tgithub.com/caddyserver/forwardproxy/httpclient\t[no test files]"
+      ],
+      "sha256": "71ffa75a56201b68782fc954340bd9a4449caa4885338f9fc374ea1a3bc8276a",
+      "bytes": 22283
+    },
+    {
+      "name": "forwardproxy-on.log",
+      "status": "PASS",
+      "top_tests": 41,
+      "test_names": [
+        "TestWhitelistAllowing",
+        "TestWhitelistBlocking",
+        "TestLocalhostDefaultForbidden",
+        "TestLocalNetworksDefaultForbidden",
+        "TestBlacklistBlocking",
+        "TestBlacklistAllowing",
+        "TestTheTest",
+        "TestDiagnosticsDownloadResetIsNotOverwrittenByCleanup",
+        "TestDiagnosticsDialFailureFieldsAndPrivacy",
+        "TestDiagnosticsInitialFlushPreservesCauseAndSkipsDial",
+        "TestDiagnosticsMeasuresBlockingAndPreservesPadding",
+        "TestDiagnosticsCaddyfileAndCanceledClassification",
+        "TestPassthrough",
+        "TestGETNoAuth",
+        "TestGETAuthCorrect",
+        "TestGETAuthWrong",
+        "TestProxySelfGet",
+        "TestConnectNoAuth",
+        "TestConnectAuthCorrect",
+        "TestConnectAuthWrong",
+        "TestPAC",
+        "TestCONNECTViaUpstream",
+        "TestGETViaUpstream",
+        "TestUpstreamPassthrough",
+        "TestHttpClient",
+        "TestHttpClientH2Multiplexing",
+        "TestGETAuthCorrectProbeResist",
+        "TestGETAuthWrongProbeResist",
+        "TestGETAuthWrongProbeResistRedir",
+        "TestConnectAuthCorrectProbeResist",
+        "TestConnectAuthWrongProbeResist",
+        "TestConnectAuthWrongProbeResistRedir",
+        "TestReliabilityRequestCancellationReachesDial",
+        "TestReliabilityUploadErrorReleasesTunnel",
+        "TestReliabilityHalfClosePreservesResponse",
+        "TestReliabilityPaddingFrames",
+        "TestReliabilityFallbackAndLoserCancellation",
+        "TestReliabilityDialConcurrencyAndDeadline",
+        "TestReliabilityDNSCancellation",
+        "TestReliabilityACLBeforeRace",
+        "TestReliabilityHTTP2Isolation"
+      ],
+      "go_package_result": [
+        "ok  \tgithub.com/caddyserver/forwardproxy\t10.385s",
+        "?   \tgithub.com/caddyserver/forwardproxy/httpclient\t[no test files]"
+      ],
+      "sha256": "4ced69ea1d9e2b8a5e41061335e215fc3aa34dc7bb09a6f9b119a312cc299658",
+      "bytes": 12998
+    }
+  ],
+  "binary": {
+    "present": false,
+    "validated": false,
+    "failure_reason": {
+      "stage": "build",
+      "phase": "binary-build",
+      "class": "RuntimeError",
+      "reason": "hard_deadline900s"
+    }
+  },
+  "actual_limits": {
+    "NanoCpus": 350000000,
+    "Memory": 536870912,
+    "MemorySwap": 536870912,
+    "PidsLimit": 256,
+    "NetworkMode": "none"
+  },
+  "disk_min_free_bytes": 783376384,
+  "oom_killed": false,
+  "owned_cleanup": true,
+  "cleanup_errors": [],
+  "production_modified": false,
+  "limits": [
+    "Full HTTP2 library correctness was already tested separately; no duplicate package run here.",
+    "Forwardproxy test log timings are functional diagnostic output, not controlled latency/throughput benefit.",
+    "Final -trimpath binary compilation did not finish within900seconds; source tests remain valid but no accepted candidate binary exists.",
+    "Future binary-only build must freeze fresh inputs and budget; do not overwrite failed result or extend its observed deadline."
+  ]
+}
