@@ -527,6 +527,7 @@ func (app *App) Start() error {
 				WriteByteTimeout:      60 * time.Second,
 				PingTimeoutAfterWrite: true,
 			}
+			h2server.CoalesceBodyReadWindowUpdates = os.Getenv("PCS_PROXY_COALESCE_WINDOW_UPDATES") == "1"
 			if os.Getenv("PCS_PROXY_LATENCY") == "1" {
 				h2server.NewWriteScheduler = http2.NewProxyWriteScheduler
 			}
