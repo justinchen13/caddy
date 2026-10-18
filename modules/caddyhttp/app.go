@@ -529,6 +529,11 @@ func (app *App) Start() error {
 			}
 			if os.Getenv("PCS_PROXY_LATENCY") == "1" {
 				h2server.NewWriteScheduler = http2.NewProxyWriteScheduler
+				// Experimental, default off. Keep the existing scheduler unless
+				// both explicit switches opt into completed-write feedback.
+				if os.Getenv("PCS_PROXY_SLOW_WRITE_FEEDBACK") == "1" {
+					h2server.NewWriteScheduler = http2.NewProxyWriteSchedulerWithSlowWriteFeedback
+				}
 			}
 			if os.Getenv("PCS_PROXY_EVIDENCE") == "1" {
 				h2server.Observe = proxyObserveH2
