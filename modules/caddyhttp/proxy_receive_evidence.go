@@ -67,12 +67,84 @@ func (r *proxyReadState) snapshot() map[string]any {
 	return out
 }
 
+// All exported transport scalars exist on every platform. A missing/short/
+// failed source is null, while an observed kernel zero keeps its numeric type.
+var proxyTCPNullableFields = [...]string{
+	"state",
+	"ca_state",
+	"retransmits",
+	"probes",
+	"backoff",
+	"rto_us",
+	"snd_mss",
+	"rcv_mss",
+	"unacked_segments",
+	"sacked_segments",
+	"lost_segments",
+	"retrans_out",
+	"last_data_sent_ms",
+	"last_data_recv_ms",
+	"last_ack_recv_ms",
+	"pmtu",
+	"rtt_us",
+	"rttvar_us",
+	"snd_cwnd",
+	"total_retrans_segments",
+	"bytes_acked",
+	"bytes_received",
+	"segs_out",
+	"segs_in",
+	"notsent_bytes",
+	"min_rtt_us",
+	"data_segs_in",
+	"data_segs_out",
+	"delivery_rate_Bps",
+	"busy_time_us",
+	"rwnd_limited_us",
+	"sndbuf_limited_us",
+	"delivered",
+	"delivered_ce",
+	"bytes_sent",
+	"bytes_retrans",
+	"dsack_dups",
+	"snd_wnd_bytes",
+	"send_queue_bytes",
+	"receive_queue_bytes",
+	"tcp_info_length",
+	"tcp_congestion_length",
+	"tcp_cc_info_length",
+	"pacing_rate_Bps",
+	"pacing_rate_unlimited",
+	"max_pacing_rate_Bps",
+	"max_pacing_rate_unlimited",
+	"delivery_rate_app_limited",
+	"delivery_rate_app_limited_status",
+	"congestion_algorithm",
+	"bbr_bandwidth_Bps",
+	"bbr_min_rtt_us",
+	"bbr_pacing_gain_q8",
+	"bbr_cwnd_gain_q8",
+}
+
 func proxyTCPUnavailable(reason string) map[string]any {
 	now := time.Now().UnixMilli()
-	return map[string]any{"available": false, "unavailable_reason": reason,
-		"bytes_received": nil, "receive_queue_bytes": nil,
-		"sample_started_unix_ms": now, "sample_completed_unix_ms": now,
-		"sample_duration_us": int64(0), "sample_sequence": nil}
+	out := make(map[string]any, len(proxyTCPNullableFields)+28)
+	for _, name := range proxyTCPNullableFields {
+		out[name] = nil
+	}
+	out["transport_evidence_version"] = 2
+	out["sample_atomic"] = false
+	out["available"], out["unavailable_reason"] = false, reason
+	out["congestion_available"], out["congestion_unavailable_reason"] = false, reason
+	out["cc_info_available"], out["cc_info_unavailable_reason"] = false, reason
+	out["sample_started_unix_ms"], out["sample_completed_unix_ms"] = now, now
+	out["sample_duration_us"], out["sample_sequence"] = int64(0), nil
+	for _, group := range [...]string{"tcp_info_sample", "congestion_sample", "cc_info_sample", "queue_sample"} {
+		out[group+"_started_unix_ms"] = nil
+		out[group+"_completed_unix_ms"] = nil
+		out[group+"_duration_us"] = nil
+	}
+	return out
 }
 
 // Existing event logs can burst at 12/s. Keep all TCP syscalls at <=1 sample/s
