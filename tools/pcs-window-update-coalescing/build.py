@@ -86,6 +86,22 @@ def prepare_build(name, caddy, net):
     return dest
 
 
+def prepare_test_module(project):
+    # Test-only dependencies belong to each native module, not the smaller CLI
+    # build module. Keep originals and the paired binary dependency locks intact.
+    dest = ROOT / "test-locks" / project
+    dest.mkdir(parents=True)
+    mod = (SRC / project / "go.mod").read_text()
+    for name, local in (("github.com/caddyserver/caddy/v2", "caddy"),
+                        ("github.com/caddyserver/forwardproxy", "forwardproxy"),
+                        ("golang.org/x/net", "net")):
+        assert "replace " + name not in mod
+        mod += "\nreplace " + name + " => " + str(SRC / local) + "\n"
+    (dest / "go.mod").write_text(mod)
+    shutil.copyfile(SRC / project / "go.sum", dest / "go.sum")
+    return dest
+
+
 def main():
     OUT.mkdir(parents=True, exist_ok=False)
     assert os.environ.get("GITHUB_ACTIONS") == "true", "remote GitHub Actions only"
@@ -136,16 +152,18 @@ def main():
         modules = (OUT / (name + "-modules.log")).read_text()
         assert "http.handlers.forward_proxy" in modules
         RESULT.setdefault("binaries", {})[name] = {"sha256": sha(binary), "bytes": binary.stat().st_size, "custom_version": version}
+    test_modules = {project: prepare_test_module(project) for project in ("caddy", "forwardproxy")}
+    test_locks = {str(p.relative_to(ROOT)): sha(p) for d in test_modules.values() for p in (d / "go.mod", d / "go.sum")}
     for race in (False, True):
         name = "caddy-proxy-regression-race" if race else "caddy-proxy-regression"
-        args = ["go", "test", "-mod=readonly", "-json", "-count=1", "-timeout=180s", "-tags=nobadger,nomysql,nopgx", "-run", "^TestProxy"]
+        args = ["go", "test", "-modfile=" + str(test_modules["caddy"] / "go.mod"), "-mod=readonly", "-json", "-count=1", "-timeout=180s", "-tags=nobadger,nomysql,nopgx", "-run", "^TestProxy"]
         if race:
             args.append("-race")
-        command(name, args + ["github.com/caddyserver/caddy/v2/modules/caddyhttp"], builds["candidate"], race=race)
+        command(name, args + ["./modules/caddyhttp"], SRC / "caddy", race=race)
         test_events(name)
-    command("forwardproxy-regression", ["go", "test", "-mod=readonly", "-json", "-count=1", "-timeout=180s", "-tags=nobadger,nomysql,nopgx", "github.com/caddyserver/forwardproxy"], builds["candidate"])
+    command("forwardproxy-regression", ["go", "test", "-modfile=" + str(test_modules["forwardproxy"] / "go.mod"), "-mod=readonly", "-json", "-count=1", "-timeout=180s", "-tags=nobadger,nomysql,nopgx", "."], SRC / "forwardproxy")
     test_events("forwardproxy-regression")
-    for rel, expected in {**tracked_locks, **build_locks}.items():
+    for rel, expected in {**tracked_locks, **build_locks, **test_locks}.items():
         assert sha(ROOT / rel) == expected, "module lock changed: " + rel
     RESULT["module_locks_unchanged"] = True
     RESULT["status"] = "CONTRACTS_AND_PAIRED_BUILD_PASS_NOT_PERFORMANCE_ACCEPTANCE"
