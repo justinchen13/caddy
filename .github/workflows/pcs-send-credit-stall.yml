@@ -1,0 +1,66 @@
+name: Validate and build bounded send-credit stall candidate
+
+on:
+  push:
+    branches: [pcs/send-credit-stall-20261023]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pcs-send-credit-stall
+  cancel-in-progress: false
+
+jobs:
+  validate-build:
+    if: github.repository == 'justinchen13/caddy' && github.ref == 'refs/heads/pcs/send-credit-stall-20261023'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: src/caddy
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: justinchen13/caddy
+          ref: 97690a054a3f5fab673057c469eda35035ce0e43
+          path: src/caddy-base
+          persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: justinchen13/net
+          ref: 4ccc1ff593088a49c323ec458840e5ae13383a85
+          path: src/net
+          persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: justinchen13/net
+          ref: ca43f763b381b813d5fb2c1344a332a0441f91ab
+          path: src/net-base
+          persist-credentials: false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: justinchen13/forwardproxy
+          ref: b1e4e257f5f3ca9774cb10744f86684e532f0d2a
+          path: src/forwardproxy
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: '1.25.6'
+          architecture: x64
+          check-latest: false
+          cache: false
+      - name: Verify contracts and build paired binaries
+        run: python3 src/caddy/tools/pcs-send-credit-stall/build.py
+      - name: Retain evidence and binaries
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: send-credit-stall-${{ github.sha }}-${{ github.run_attempt }}
+          path: dist/send-credit-stall/
+          retention-days: 7
+          if-no-files-found: error
+          compression-level: 6
+          include-hidden-files: false
