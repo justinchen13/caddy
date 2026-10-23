@@ -536,6 +536,7 @@ func (app *App) Start() error {
 				h2server.ObserveEnabled = proxyH2ObservationEnabled
 				h2server.CountError = proxyEvidenceH2ErrorCounter(app.logger.Named("proxy_evidence"))
 			}
+			configureProxySendCreditStall(h2server)
 			//nolint:errcheck
 			http2.ConfigureServer(srv.server, h2server)
 		}
