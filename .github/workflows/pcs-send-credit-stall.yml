@@ -2,7 +2,7 @@ name: Validate and build bounded send-credit stall candidate
 
 on:
   push:
-    branches: [pcs/send-credit-stall-20261023]
+    branches: [pcs/send-credit-stall-20261105]
 
 permissions:
   contents: read
@@ -13,7 +13,7 @@ concurrency:
 
 jobs:
   validate-build:
-    if: github.repository == 'justinchen13/caddy' && github.ref == 'refs/heads/pcs/send-credit-stall-20261023'
+    if: github.repository == 'justinchen13/caddy' && github.ref == 'refs/heads/pcs/send-credit-stall-20261105'
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
@@ -31,7 +31,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: justinchen13/net
-          ref: 4ccc1ff593088a49c323ec458840e5ae13383a85
+          ref: 1c45cd7dd97a93858bf276701100ae9fa00b3dbf
           path: src/net
           persist-credentials: false
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

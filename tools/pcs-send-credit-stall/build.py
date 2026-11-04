@@ -15,12 +15,16 @@ INPUT = SRC / "caddy" / "tools" / "pcs-send-credit-stall"
 PINS = {
     "caddy": "0c4c4a8dcb757eb3d9319ab3e73d169510ebb5ae",
     "caddy-base": "97690a054a3f5fab673057c469eda35035ce0e43",
-    "net": "4ccc1ff593088a49c323ec458840e5ae13383a85",
+    "net": "1c45cd7dd97a93858bf276701100ae9fa00b3dbf",
     "net-base": "ca43f763b381b813d5fb2c1344a332a0441f91ab",
     "forwardproxy": "b1e4e257f5f3ca9774cb10744f86684e532f0d2a",
 }
 TARGET = "^TestProxy(SendCredit|GoAway)"
 REQUIRED_TARGETS = set(['TestProxyGoAwayFlushErrorPropagated', 'TestProxyGoAwayFrameErrorPreserved', 'TestProxyGoAwaySuccessfulWireFrame', 'TestProxySendCreditConservationSplitAndCancel', 'TestProxySendCreditControlAndStreamUpdates', 'TestProxySendCreditControlBusyAcrossTimeout', 'TestProxySendCreditDATACompletionWithDoneResets', 'TestProxySendCreditDrainConcurrentInitialization', 'TestProxySendCreditDrainConcurrentReservations', 'TestProxySendCreditDrainGoAwayWriteErrorReleases', 'TestProxySendCreditDrainInitializationAndCopies', 'TestProxySendCreditDrainNativeLeaseLifetime', 'TestProxySendCreditDrainObservationGatesAndTimeout', 'TestProxySendCreditFreshACKBeforeCompletionDrains', 'TestProxySendCreditProbeACKAndFlushOrder', 'TestProxySendCreditProbeActiveFrameAndDATAReset', 'TestProxySendCreditProbeLateACKAndError', 'TestProxySendCreditStallEligibility', 'TestProxySendCreditStallNativeDrain', 'TestProxySendCreditStallNoACKDoesNotClose', 'TestProxySendCreditStallWUInvalidatesProbe', 'TestProxySendCreditTransportRepoolKeepsAcceptedStream'])
+REQUIRED_TARGETS.update({
+    "TestProxySendCreditStallUnrelatedStreamChurn",
+    "TestProxySendCreditResetOnlyPendingWriter",
+})
 ENV = dict(os.environ, GOTOOLCHAIN="local", GOWORK="off", CGO_ENABLED="0",
            GOOS="linux", GOARCH="amd64", GOAMD64="v1", GOMAXPROCS="2",
            GOMEMLIMIT="1GiB")
@@ -101,7 +105,7 @@ def main():
     OUT.mkdir(parents=True, exist_ok=False)
     assert os.environ.get("GITHUB_ACTIONS") == "true", "remote GitHub Actions only"
     assert os.environ["GITHUB_REPOSITORY"] == "justinchen13/caddy"
-    assert os.environ["GITHUB_REF"] == "refs/heads/pcs/send-credit-stall-20261023"
+    assert os.environ["GITHUB_REF"] == "refs/heads/pcs/send-credit-stall-20261105"
     command("go-version", ["go", "version"], ROOT)
     assert (OUT / "go-version.log").read_text().strip() == "go version go1.25.6 linux/amd64"
     for project, pin in PINS.items():
@@ -124,6 +128,8 @@ def main():
             args.append("-race")
         command(name, args + ["./http2"], SRC / "net", race=race)
         test_events(name)
+    command("net-proxy-race", ["go", "test", "-mod=readonly", "-json", "-count=1", "-timeout=180s", "-race", "-run", "^TestProxy", "./http2"], SRC / "net", race=True)
+    test_events("net-proxy-race")
     command("net-regression", ["go", "test", "-mod=readonly", "-json", "-count=1", "-timeout=300s", "./http2", "./http2/hpack"], SRC / "net")
     test_events("net-regression")
     builds = {"baseline": prepare_build("baseline", "caddy-base", "net-base"),
