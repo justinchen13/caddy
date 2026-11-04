@@ -15,7 +15,7 @@ INPUT = SRC / "caddy" / "tools" / "pcs-send-credit-stall"
 PINS = {
     "caddy": "0c4c4a8dcb757eb3d9319ab3e73d169510ebb5ae",
     "caddy-base": "97690a054a3f5fab673057c469eda35035ce0e43",
-    "net": "1c45cd7dd97a93858bf276701100ae9fa00b3dbf",
+    "net": "851c16f583a0cf241daa4ceee2d064439467e10a",
     "net-base": "ca43f763b381b813d5fb2c1344a332a0441f91ab",
     "forwardproxy": "b1e4e257f5f3ca9774cb10744f86684e532f0d2a",
 }

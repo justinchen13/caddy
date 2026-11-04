@@ -31,7 +31,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: justinchen13/net
-          ref: 1c45cd7dd97a93858bf276701100ae9fa00b3dbf
+          ref: 851c16f583a0cf241daa4ceee2d064439467e10a
           path: src/net
           persist-credentials: false
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
