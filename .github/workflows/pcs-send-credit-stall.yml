@@ -2,7 +2,9 @@ name: Validate and build bounded send-credit stall candidate
 
 on:
   push:
-    branches: [pcs/send-credit-stall-20261105]
+    # The experiment branch and the integration branch it is delivered into.
+    branches: [pcs/send-credit-stall-20261105, pcs/transport-evidence-20261018]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -13,7 +15,10 @@ concurrency:
 
 jobs:
   validate-build:
-    if: github.repository == 'justinchen13/caddy' && github.ref == 'refs/heads/pcs/send-credit-stall-20261105'
+    if: >-
+      github.repository == 'justinchen13/caddy' &&
+      (github.ref == 'refs/heads/pcs/send-credit-stall-20261105' ||
+       github.ref == 'refs/heads/pcs/transport-evidence-20261018')
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:

@@ -19,6 +19,13 @@ PINS = {
     "net-base": "ca43f763b381b813d5fb2c1344a332a0441f91ab",
     "forwardproxy": "b1e4e257f5f3ca9774cb10744f86684e532f0d2a",
 }
+# Branches allowed to run this pinned validation: the experiment branch and the
+# integration branch it is delivered into (also via workflow_dispatch).
+ALLOWED_REFS = {
+    "refs/heads/pcs/send-credit-stall-20261105",
+    "refs/heads/pcs/transport-evidence-20261018",
+}
+CI_PATHS = ("tools/pcs-send-credit-stall/", ".github/workflows/pcs-send-credit-stall.yml")
 TARGET = "^TestProxy(SendCredit|GoAway)"
 REQUIRED_TARGETS = set(['TestProxyGoAwayFlushErrorPropagated', 'TestProxyGoAwayFrameErrorPreserved', 'TestProxyGoAwaySuccessfulWireFrame', 'TestProxySendCreditConservationSplitAndCancel', 'TestProxySendCreditControlAndStreamUpdates', 'TestProxySendCreditControlBusyAcrossTimeout', 'TestProxySendCreditDATACompletionWithDoneResets', 'TestProxySendCreditDrainConcurrentInitialization', 'TestProxySendCreditDrainConcurrentReservations', 'TestProxySendCreditDrainGoAwayWriteErrorReleases', 'TestProxySendCreditDrainInitializationAndCopies', 'TestProxySendCreditDrainNativeLeaseLifetime', 'TestProxySendCreditDrainObservationGatesAndTimeout', 'TestProxySendCreditFreshACKBeforeCompletionDrains', 'TestProxySendCreditProbeACKAndFlushOrder', 'TestProxySendCreditProbeActiveFrameAndDATAReset', 'TestProxySendCreditProbeLateACKAndError', 'TestProxySendCreditStallEligibility', 'TestProxySendCreditStallNativeDrain', 'TestProxySendCreditStallNoACKDoesNotClose', 'TestProxySendCreditStallWUInvalidatesProbe', 'TestProxySendCreditTransportRepoolKeepsAcceptedStream'])
 REQUIRED_TARGETS.update({
@@ -105,7 +112,7 @@ def main():
     OUT.mkdir(parents=True, exist_ok=False)
     assert os.environ.get("GITHUB_ACTIONS") == "true", "remote GitHub Actions only"
     assert os.environ["GITHUB_REPOSITORY"] == "justinchen13/caddy"
-    assert os.environ["GITHUB_REF"] == "refs/heads/pcs/send-credit-stall-20261105"
+    assert os.environ["GITHUB_REF"] in ALLOWED_REFS, os.environ["GITHUB_REF"]
     command("go-version", ["go", "version"], ROOT)
     assert (OUT / "go-version.log").read_text().strip() == "go version go1.25.6 linux/amd64"
     for project, pin in PINS.items():
@@ -114,8 +121,12 @@ def main():
         head = git(path, "rev-parse", "HEAD")
         if project == "caddy":
             assert head == os.environ["GITHUB_SHA"]
+            # Only the runtime tree is pinned. CI-only paths may differ; any
+            # other change means this evidence no longer describes HEAD.
             changed = git(path, "diff", "--name-only", expanded, head).splitlines()
-            assert all(p.startswith(("tools/pcs-send-credit-stall/", ".github/workflows/pcs-send-credit-stall.yml")) for p in changed), changed
+            runtime = [p for p in changed if not p.startswith(CI_PATHS)]
+            assert not runtime, ("caddy runtime moved from pinned commit %s; update PINS['caddy'] "
+                                 "and re-run validation: %s" % (expanded, runtime))
         else:
             assert head == expanded
         assert not git(path, "status", "--porcelain", "--untracked-files=no")
